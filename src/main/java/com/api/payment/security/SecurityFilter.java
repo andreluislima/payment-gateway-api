@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.api.payment.domain.Usuario;
-import com.api.payment.repository.UserRepository;
+import com.api.payment.repository.UsuarioRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,7 +25,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     TokenService tokenService;
 	
     @Autowired
-    UserRepository userRepository;
+    UsuarioRepository userRepository;
     
     @Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

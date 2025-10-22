@@ -14,7 +14,7 @@ import com.api.payment.domain.Usuario;
 import com.api.payment.dto.login.LoginRequestDTO;
 import com.api.payment.dto.login.RegisterRequestDTO;
 import com.api.payment.dto.login.ResponseDTO;
-import com.api.payment.repository.UserRepository;
+import com.api.payment.repository.UsuarioRepository;
 import com.api.payment.security.TokenService;
 
 @RestController
@@ -22,7 +22,7 @@ import com.api.payment.security.TokenService;
 public class AuthController {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UsuarioRepository userRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;

@@ -9,13 +9,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.api.payment.domain.Usuario;
-import com.api.payment.repository.UserRepository;
+import com.api.payment.repository.UsuarioRepository;
 
 @Component
 public class CustomUserDetailsService implements UserDetailsService{
 
 	@Autowired
-	private UserRepository userRepository;
+	private UsuarioRepository userRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

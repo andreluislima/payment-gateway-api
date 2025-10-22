@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.api.payment.domain.Usuario;
 
 @Repository
-public interface UserRepository extends JpaRepository<Usuario, Long> {
+public interface CobrancaRepository extends JpaRepository<Usuario, Long> {
 	Optional<Usuario>findByCpf(String cpf);
 }

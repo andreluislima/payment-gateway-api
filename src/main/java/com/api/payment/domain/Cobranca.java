@@ -27,7 +27,6 @@ public class Cobranca {
 	@Column(name="cpf_destinatario")
 	private String cpfDestinatario;
 	
-	
 	@Column(name="valor_cobranca")
 	private Double valorCobranca;
 	
