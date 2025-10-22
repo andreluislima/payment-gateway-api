@@ -14,9 +14,6 @@ import com.api.payment.enums.StatusCobranca;
 @Repository
 public interface CobrancaRepository extends JpaRepository<Cobranca, Long> {
 	
-	Optional<Usuario>findByCpf(String cpf);
-	
-	Cobranca criarCobranca(CobrancaRequestDTO dto);
-	List<Cobranca> findByOriginadorCobranca(Long idOriginador, StatusCobranca status);
-	List<Cobranca> findByDestinatarioCobranca(String cpfDestinatario, StatusCobranca status);
+	List<Cobranca> findByOriginadorCobrancaIdAndStatus(Long originadorId, StatusCobranca status);
+	List<Cobranca> findByCpfDestinatarioAndStatus(String cpfDestinatario, StatusCobranca status);
 }

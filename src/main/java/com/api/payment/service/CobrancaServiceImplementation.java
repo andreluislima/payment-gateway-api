@@ -39,14 +39,12 @@ public class CobrancaServiceImplementation implements CobrancaServiceInterface {
 
 	@Override
 	public List<Cobranca> listaCobrancasEnviadas(Long idOriginador, StatusCobranca status) {
-		 
-		return cobrancaRepository.findByOriginadorCobranca(idOriginador, status);
+		return cobrancaRepository.findByOriginadorCobrancaIdAndStatus(idOriginador, status);
 	}
 
 	@Override
 	public List<Cobranca> listaCobrancasRecebidas(String cpfDestinatario, StatusCobranca status) {
-		 
-		return cobrancaRepository.findByDestinatarioCobranca(cpfDestinatario, status);
+		return cobrancaRepository.findByCpfDestinatarioAndStatus(cpfDestinatario, status);
 	}
 
 	

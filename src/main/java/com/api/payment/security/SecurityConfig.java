@@ -33,6 +33,9 @@ public class SecurityConfig {
                 		.requestMatchers(HttpMethod.GET, "/user").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/cobranca/criarCobranca").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/cobranca/enviada").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/cobranca/recebida").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
