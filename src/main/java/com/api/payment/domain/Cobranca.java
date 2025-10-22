@@ -1,7 +1,11 @@
 package com.api.payment.domain;
 
+import com.api.payment.enums.StatusCobranca;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,6 +36,10 @@ public class Cobranca {
 	
 	@Column(name="descricao")
 	private String descricao;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="status")
+	private StatusCobranca status = StatusCobranca.PENDENTE;
 
 	public Long getId() {
 		return id;
@@ -71,6 +79,14 @@ public class Cobranca {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public StatusCobranca getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusCobranca status) {
+		this.status = status;
 	}
 	
 	
