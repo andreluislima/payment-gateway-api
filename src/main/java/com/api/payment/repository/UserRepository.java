@@ -5,9 +5,9 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.api.payment.domain.User;
+import com.api.payment.domain.Usuario;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-	Optional<User>findByCpf(String cpf);
+public interface UserRepository extends JpaRepository<Usuario, Long> {
+	Optional<Usuario>findByCpf(String cpf);
 }

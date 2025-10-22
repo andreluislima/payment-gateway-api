@@ -1,17 +1,21 @@
 package com.api.payment.domain;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="usuario")
 @SequenceGenerator(name="user_id_seq", sequenceName ="user_id_seq", initialValue = 1, allocationSize = 1)
-public class User {
+public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
@@ -29,6 +33,9 @@ public class User {
 	
 	@Column(name="senha")
 	private String senha;
+	
+	@OneToMany(mappedBy = "originadorCobranca", cascade = CascadeType.ALL)
+	private List<Cobranca> listaCobrancas;
 
 	public Long getId() {
 		return id;

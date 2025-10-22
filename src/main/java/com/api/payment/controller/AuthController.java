@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.payment.domain.User;
+import com.api.payment.domain.Usuario;
 import com.api.payment.dto.login.LoginRequestDTO;
 import com.api.payment.dto.login.RegisterRequestDTO;
 import com.api.payment.dto.login.ResponseDTO;
@@ -33,7 +33,7 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity login(@RequestBody LoginRequestDTO body) {
 		
-		User user = this.userRepository.findByCpf(body.cpf()).orElseThrow(() -> new RuntimeException("User not found"));
+		Usuario user = this.userRepository.findByCpf(body.cpf()).orElseThrow(() -> new RuntimeException("User not found"));
 		if(passwordEncoder.matches(body.senha(), user.getSenha())) {
 			String token = this.tokenService.generateToken(user);
 			return ResponseEntity.ok(new ResponseDTO(user.getNome(), token));
@@ -44,11 +44,11 @@ public class AuthController {
 	@PostMapping("/register")
 	public ResponseEntity register(@RequestBody RegisterRequestDTO body) {
 		
-		Optional<User>user = this.userRepository.findByCpf(body.cpf());
+		Optional<Usuario>user = this.userRepository.findByCpf(body.cpf());
 		
 		if(user.isEmpty()) {
 			
-			User newUser = new User();
+			Usuario newUser = new Usuario();
 			newUser.setNome(body.nome());
 			newUser.setCpf(body.cpf());
 			newUser.setEmail(body.email());
