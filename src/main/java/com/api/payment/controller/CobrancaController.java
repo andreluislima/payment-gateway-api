@@ -32,7 +32,6 @@ public class CobrancaController {
 	@GetMapping("/enviada")
 	public ResponseEntity<List<Cobranca>>listarEnviadas(@RequestParam Long idOriginador, 
 						@RequestParam StatusCobranca status){
-		
 		return ResponseEntity.ok(cobrancaServiceInterface.listaCobrancasEnviadas(idOriginador, status));
 	}
 	
@@ -41,6 +40,11 @@ public class CobrancaController {
 						@RequestParam StatusCobranca status
 			){
 		return ResponseEntity.ok(cobrancaServiceInterface.listaCobrancasRecebidas(cpfDestinatario, status));
+	}
+	
+	@GetMapping("/cobrancas")
+	public ResponseEntity<List<Cobranca>>listarCobrancas(){
+		return ResponseEntity.ok(cobrancaServiceInterface.listaCobrancas());
 	}
 	
 	

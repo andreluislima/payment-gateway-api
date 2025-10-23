@@ -11,4 +11,5 @@ public interface CobrancaServiceInterface {
 	public Cobranca criarCobranca(CobrancaRequestDTO dto);
 	public List<Cobranca> listaCobrancasEnviadas(Long idOriginador, StatusCobranca status);
 	public List<Cobranca> listaCobrancasRecebidas(String cpfDestinatario, StatusCobranca status);
+	public List<Cobranca>listaCobrancas();
 }

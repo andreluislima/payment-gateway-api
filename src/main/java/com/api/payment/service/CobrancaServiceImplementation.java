@@ -47,5 +47,10 @@ public class CobrancaServiceImplementation implements CobrancaServiceInterface {
 		return cobrancaRepository.findByCpfDestinatarioAndStatus(cpfDestinatario, status);
 	}
 
+	@Override
+	public List<Cobranca> listaCobrancas() {
+		return cobrancaRepository.findAll();
+	}
+
 	
 }
