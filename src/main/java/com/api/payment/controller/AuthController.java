@@ -34,36 +34,17 @@ public class AuthController {
 	private TokenService tokenService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<ResponseDTO> login(@RequestBody LoginRequestDTO body) {
-
-		try {
-			 Usuario user = userRepository.findByCpf(body.cpf())
-					 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
-			 
-			 if(!passwordEncoder.matches(body.senha(), user.getSenha())) {
-				 throw new BadCredentialsException("Senha inválida");
-			 }
-			 
-			 String token = tokenService.generateToken(user);
-			 ResponseDTO response = new ResponseDTO("Acesso autorizado", user.getNome(), token);
-			 return ResponseEntity.ok(response);
-					 
-		} catch (UsernameNotFoundException e) {
+	public ResponseEntity<?> login(@RequestBody LoginRequestDTO body) {
 		
-			ResponseDTO error = new ResponseDTO(e.getMessage(), null, null);
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-			
-		}catch (BadCredentialsException e) {
-			
-			ResponseDTO errorResponse = new ResponseDTO(e.getMessage(), null, null);
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-			
-		}catch (Exception e) {
-			 ResponseDTO errorResponse = new ResponseDTO("Erro inesperado" + e.getMessage(), null, null);
-			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+		Usuario user = userRepository.findByCpf(body.cpf()).orElseThrow(
+				()-> new UsernameNotFoundException("Usuário não encontrado")
+				);
+		if(!passwordEncoder.matches(body.senha(), user.getSenha())) {
+			throw new BadCredentialsException("CPF ou Senha incorretos");
 		}
-		
 		 
+		String token = tokenService.generateToken(user);
+		return ResponseEntity.ok(new ResponseDTO("Acesso autorizado", user.getNome(), token));
 	}
 			
 	
