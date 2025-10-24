@@ -3,8 +3,10 @@ package com.api.payment.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,19 +34,38 @@ public class AuthController {
 	private TokenService tokenService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody LoginRequestDTO body) {
+	public ResponseEntity<ResponseDTO> login(@RequestBody LoginRequestDTO body) {
+
+		try {
+			 Usuario user = userRepository.findByCpf(body.cpf())
+					 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+			 
+			 if(!passwordEncoder.matches(body.senha(), user.getSenha())) {
+				 throw new BadCredentialsException("Senha inválida");
+			 }
+			 
+			 String token = tokenService.generateToken(user);
+			 ResponseDTO response = new ResponseDTO("Acesso autorizado", user.getNome(), token);
+			 return ResponseEntity.ok(response);
+					 
+		} catch (UsernameNotFoundException e) {
 		
-		Usuario user = this.userRepository.findByCpf(body.cpf()).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-		
-		if(!passwordEncoder.matches(body.senha(),user.getSenha())) {
-			throw new BadCredentialsException("Senha inválida.");
+			ResponseDTO error = new ResponseDTO(e.getMessage(), null, null);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+			
+		}catch (BadCredentialsException e) {
+			
+			ResponseDTO errorResponse = new ResponseDTO(e.getMessage(), null, null);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+			
+		}catch (Exception e) {
+			 ResponseDTO errorResponse = new ResponseDTO("Erro inesperado" + e.getMessage(), null, null);
+			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
 		}
 		
-		String token = tokenService.generateToken(user);
-		return ResponseEntity.ok(new ResponseDTO("Acesso Autorizado", user.getNome(), token));
- 
-	
+		 
 	}
+			
 	
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody RegisterRequestDTO body) {

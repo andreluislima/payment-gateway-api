@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
 		StandardError error = new  StandardError(
 				LocalDateTime.now(),
 				HttpStatus.UNAUTHORIZED.value(),
-				"Credencias inválidas",
+				"Acesso negado",
 				"CPF ou senha incorretos"
 				);
 		
