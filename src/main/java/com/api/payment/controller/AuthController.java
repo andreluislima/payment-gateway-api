@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,23 +32,26 @@ public class AuthController {
 	private TokenService tokenService;
 	
 	@PostMapping("/login")
-	public ResponseEntity login(@RequestBody LoginRequestDTO body) {
+	public ResponseEntity<?> login(@RequestBody LoginRequestDTO body) {
 		
-		Usuario user = this.userRepository.findByCpf(body.cpf()).orElseThrow(() -> new RuntimeException("User not found"));
-		if(passwordEncoder.matches(body.senha(), user.getSenha())) {
-			String token = this.tokenService.generateToken(user);
-			return ResponseEntity.ok(new ResponseDTO(user.getNome(), token));
+		Usuario user = this.userRepository.findByCpf(body.cpf()).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+		
+		if(!passwordEncoder.matches(body.senha(),user.getSenha())) {
+			throw new BadCredentialsException("Senha inválida.");
 		}
-		return ResponseEntity.badRequest().build();
+		
+		String token = tokenService.generateToken(user);
+		return ResponseEntity.ok(new ResponseDTO("Acesso Autorizado", user.getNome(), token));
+ 
+	
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity register(@RequestBody RegisterRequestDTO body) {
+	public ResponseEntity<?> register(@RequestBody RegisterRequestDTO body) {
 		
 		Optional<Usuario>user = this.userRepository.findByCpf(body.cpf());
 		
-		if(user.isEmpty()) {
-			
+		if(user.isEmpty()) {	
 			Usuario newUser = new Usuario();
 			newUser.setNome(body.nome());
 			newUser.setCpf(body.cpf());
@@ -56,10 +60,8 @@ public class AuthController {
 			this.userRepository.save(newUser);
 			
  				String token = this.tokenService.generateToken(newUser);
-				return ResponseEntity.ok(new ResponseDTO(newUser.getNome(), token));
-			
+				return ResponseEntity.ok(new ResponseDTO("Usuário criado com sucesso", newUser.getNome(), token));
 		}
-		
 		return ResponseEntity.badRequest().build();
 	}
 }

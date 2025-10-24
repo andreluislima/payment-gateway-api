@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.payment.domain.Cobranca;
 import com.api.payment.dto.cobranca.CobrancaRequestDTO;
 import com.api.payment.enums.StatusCobranca;
+import com.api.payment.exception.ResourceNotFoundException;
 import com.api.payment.service.CobrancaServiceInterface;
 
 @RestController
@@ -30,16 +31,28 @@ public class CobrancaController {
 	}
 	
 	@GetMapping("/enviada")
-	public ResponseEntity<List<Cobranca>>listarEnviadas(@RequestParam Long idOriginador, 
+	public ResponseEntity<List<Cobranca>>listarEnviadas(
+						@RequestParam Long idOriginador, 
 						@RequestParam StatusCobranca status){
-		return ResponseEntity.ok(cobrancaServiceInterface.listaCobrancasEnviadas(idOriginador, status));
+		
+		List<Cobranca>lista = cobrancaServiceInterface.listaCobrancasEnviadas(idOriginador, status);
+		
+		if(lista.isEmpty()) {
+			throw new ResourceNotFoundException("Nenhuma cobrança enviada");
+		}
+		return ResponseEntity.ok(lista);
 	}
 	
 	@GetMapping("/recebida")
-	public ResponseEntity<List<Cobranca>>listarRecebidas(@RequestParam String cpfDestinatario,
+	public ResponseEntity<List<Cobranca>>listarRecebidas(
+						@RequestParam String cpfDestinatario,
 						@RequestParam StatusCobranca status
 			){
-		return ResponseEntity.ok(cobrancaServiceInterface.listaCobrancasRecebidas(cpfDestinatario, status));
+		List<Cobranca>lista = cobrancaServiceInterface.listaCobrancasRecebidas(cpfDestinatario, status);
+		if(lista.isEmpty()) {
+			throw new ResourceNotFoundException("Nenhuma cobrança recebida encontrada.");
+		}
+		return ResponseEntity.ok(lista);
 	}
 	
 	@GetMapping("/cobrancas")

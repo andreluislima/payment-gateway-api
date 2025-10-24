@@ -9,6 +9,8 @@ import com.api.payment.domain.Cobranca;
 import com.api.payment.domain.Usuario;
 import com.api.payment.dto.cobranca.CobrancaRequestDTO;
 import com.api.payment.enums.StatusCobranca;
+import com.api.payment.exception.OperationException;
+import com.api.payment.exception.ResourceNotFoundException;
 import com.api.payment.repository.CobrancaRepository;
 import com.api.payment.repository.UsuarioRepository;
 
@@ -25,20 +27,26 @@ public class CobrancaServiceImplementation implements CobrancaServiceInterface {
 	public Cobranca criarCobranca(CobrancaRequestDTO dto) {
 		
 		Usuario usuarioOriginador = usuarioRepository.findById(dto.idOriginadorCobranca())
-				.orElseThrow(()-> new RuntimeException("Usuário não encontrado"));
+				.orElseThrow(()-> new ResourceNotFoundException("Originador da cobrança não encontrado"));
 		
-		Cobranca cobranca = new Cobranca();
-		cobranca.setOriginadorCobranca(usuarioOriginador);
-		cobranca.setCpfDestinatario(dto.cpfDestinatario());
-		cobranca.setValorCobranca(dto.valorCobranca());
-		cobranca.setDescricao(dto.descricao());
-		cobranca.setStatus(dto.status());
-		
-		return cobrancaRepository.save(cobranca);
+		try {
+			Cobranca cobranca = new Cobranca();
+			cobranca.setOriginadorCobranca(usuarioOriginador);
+			cobranca.setCpfDestinatario(dto.cpfDestinatario());
+			cobranca.setValorCobranca(dto.valorCobranca());
+			cobranca.setDescricao(dto.descricao());
+			cobranca.setStatus(dto.status());
+			
+			return cobrancaRepository.save(cobranca);
+		} catch (Exception e) {
+			throw new OperationException("Erro ao criar cobrança: " + e.getMessage());
+		}
+	
 	}
 
 	@Override
 	public List<Cobranca> listaCobrancasEnviadas(Long idOriginador, StatusCobranca status) {
+		
 		return cobrancaRepository.findByOriginadorCobrancaIdAndStatus(idOriginador, status);
 	}
 
@@ -49,7 +57,13 @@ public class CobrancaServiceImplementation implements CobrancaServiceInterface {
 
 	@Override
 	public List<Cobranca> listaCobrancas() {
-		return cobrancaRepository.findAll();
+		List<Cobranca> lista = cobrancaRepository.findAll();
+		if(lista.isEmpty()) {
+			throw new ResourceNotFoundException("Nenhuma cobrança cadastrada");
+		}else {
+			return lista;
+		}
+			
 	}
 
 	

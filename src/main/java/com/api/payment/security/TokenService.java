@@ -12,6 +12,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 
 @Service
 public class TokenService {
@@ -49,7 +50,7 @@ public class TokenService {
 	 
 	 private Instant generateExpirationDate(){
 	        return LocalDateTime.now()
-	        		.plusMinutes(30).toInstant(ZoneOffset.of("-03:00"));
+	        		.plusMinutes(3).toInstant(ZoneOffset.of("-03:00"));
 	    }
 //	 
 //	 .plusMinutes(30) // expira em 30 minutos
