@@ -1,4 +1,4 @@
-package com.andrelima.api.payment.domain;
+package com.api.payment.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
