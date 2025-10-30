@@ -1,6 +1,7 @@
 package com.api.payment.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,5 +67,31 @@ public class CobrancaServiceImplementation implements CobrancaServiceInterface {
 			
 	}
 
+
+	@Override
+	public Cobranca buscarCobrancaPorId(Long id) {
+		
+		return cobrancaRepository.findById(id).orElseThrow(
+				()-> new RuntimeException("Cobranca nao encontrada"));
+	}
+
+	@Override
+	public Cobranca removeCobranca(Long id, Long idOriginador) {
+		 Cobranca cobranca = cobrancaRepository.findById(id).orElseThrow(
+				 ()-> new RuntimeException("Cobranca nao encontrada"));
+		 
+		 if(!Objects.equals(cobranca.getOriginadorCobranca().getId(), idOriginador)) {
+			 throw new RuntimeException("Voce nao tem permissao para remover essa cobranca");
+			 
+		 }else if (cobranca.getStatus() != StatusCobranca.PENDENTE) {
+			throw new RuntimeException("Apenas cobrancas PENDENTES podem ser removidas");
+		}
+		 
+		 cobrancaRepository.delete(cobranca);
+		 
+		return cobranca;
+	}
+
+	
 	
 }

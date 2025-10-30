@@ -84,8 +84,7 @@ class AuthControllerTest {
         when(passwordEncoder.matches("senha", "senhaCorreta"))
                 .thenThrow(new BadCredentialsException("Senha inválida."));
 
-        mockMvc.perform(post("/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/auth/login")                .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"cpf\":\"12345678900\",\"senha\":\"senha\"}"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.mensagem").value("Acesso negado"));

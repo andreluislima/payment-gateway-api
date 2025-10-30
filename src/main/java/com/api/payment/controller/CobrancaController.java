@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.payment.domain.Cobranca;
+import com.api.payment.dto.cobranca.CobrancaRemoveResponseDTO;
 import com.api.payment.dto.cobranca.CobrancaRequestDTO;
+import com.api.payment.dto.cobranca.CobrancaResponseDTO;
 import com.api.payment.enums.StatusCobranca;
 import com.api.payment.exception.ResourceNotFoundException;
 import com.api.payment.service.CobrancaServiceInterface;
@@ -60,6 +64,20 @@ public class CobrancaController {
 		return ResponseEntity.ok(cobrancaServiceInterface.listaCobrancas());
 	}
 	
-	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<CobrancaRemoveResponseDTO>removeCobranca(
+			@PathVariable Long id, 
+			@RequestParam long idOriginador){
+		
+		Cobranca cobranca = cobrancaServiceInterface.removeCobranca(id, idOriginador);
+		
+		CobrancaRemoveResponseDTO response = new CobrancaRemoveResponseDTO(
+				"Cobranca removida com sucesso",
+				cobranca.getId(),
+				cobranca.getValorCobranca()
+				);
+		
+		return ResponseEntity.ok(response);
+	}
 	
 }
