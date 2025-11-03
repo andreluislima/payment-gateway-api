@@ -50,7 +50,7 @@ public class TokenService {
 	 
 	 private Instant generateExpirationDate(){
 	        return LocalDateTime.now()
-	        		.plusMinutes(3).toInstant(ZoneOffset.of("-03:00"));
+	        		.plusMinutes(30).toInstant(ZoneOffset.of("-03:00"));
 	    }
 //	 
 //	 .plusMinutes(30) // expira em 30 minutos

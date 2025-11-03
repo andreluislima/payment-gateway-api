@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-         
     <modelVersion>4.0.0</modelVersion>
-
-    <!-- 🌱 Projeto base -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.3</version>
-        <relativePath/>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.andrelima.api</groupId>
-    <artifactId>pyament-gateway-api</artifactId>
+    <groupId>com.api.payment</groupId>
+    <artifactId>payment-gateway-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>pyament-gateway-api</name>
-    <description>API de pagamentos</description>
+    <name>payment-gateway-api</name>
+    <description>payment-gateway-api</description>
+    <url/>
 
     <properties>
         <java.version>21</java.version>
     </properties>
-
-    <!-- 📦 DEPENDÊNCIAS -->
     <dependencies>
 
         <!-- 🌐 Spring Web (REST Controllers, JSON, etc.) -->
@@ -81,7 +76,6 @@
 
     </dependencies>
 
-    <!-- ⚙️ PLUGINS DE BUILD -->
     <build>
         <plugins>
             <!-- Plugin padrão do Spring Boot -->
