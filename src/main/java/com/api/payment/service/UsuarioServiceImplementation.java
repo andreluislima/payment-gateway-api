@@ -5,6 +5,7 @@ import com.api.payment.dto.usuario.UsuarioRequestDTO;
 import com.api.payment.dto.usuario.UsuarioResponseDTO;
 import com.api.payment.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,9 @@ public class UsuarioServiceImplementation implements UsuarioServiceInterface{
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Usuario criarUsuario(UsuarioRequestDTO dto) {
@@ -25,7 +29,8 @@ public class UsuarioServiceImplementation implements UsuarioServiceInterface{
         user.setNome(dto.nome());
         user.setCpf(dto.cpf());
         user.setEmail(dto.email());
-        user.setSenha(dto.senha());
+//        user.setSenha(dto.senha());
+        user.setSenha(passwordEncoder.encode(dto.senha()));
 
         return usuarioRepository.save(user);
         
@@ -36,12 +41,11 @@ public class UsuarioServiceImplementation implements UsuarioServiceInterface{
         Usuario user = usuarioRepository.findById(id).orElseThrow(
                 ()->new RuntimeException("Usuário não encontrado.")
         );
-        Usuario usuario = new Usuario();
-        usuario.setNome(dto.nome());
-        usuario.setCpf(dto.cpf());
-        usuario.setEmail(dto.email());
+        user.setNome(dto.nome());
+        user.setCpf(dto.cpf());
+        user.setEmail(dto.email());
 
-        return usuarioRepository.save(usuario);
+        return usuarioRepository.save(user);
     }
 
     @Override

@@ -48,22 +48,22 @@ public class AuthController {
 	}
 			
 	
-	@PostMapping("/register")
-	public ResponseEntity<?> register(@RequestBody RegisterRequestDTO body) {
-		
-		Optional<Usuario>user = this.userRepository.findByCpf(body.cpf());
-		
-		if(user.isEmpty()) {	
-			Usuario newUser = new Usuario();
-			newUser.setNome(body.nome());
-			newUser.setCpf(body.cpf());
-			newUser.setEmail(body.email());
-			newUser.setSenha(passwordEncoder.encode(body.senha()));
-			this.userRepository.save(newUser);
-			
- 				String token = this.tokenService.generateToken(newUser);
-				return ResponseEntity.ok(new ResponseDTO("Usuário criado com sucesso", newUser.getNome(), token));
-		}
-		return ResponseEntity.badRequest().build();
-	}
+//	@PostMapping("/register")
+//	public ResponseEntity<?> register(@RequestBody RegisterRequestDTO body) {
+//
+//		Optional<Usuario>user = this.userRepository.findByCpf(body.cpf());
+//
+//		if(user.isEmpty()) {
+//			Usuario newUser = new Usuario();
+//			newUser.setNome(body.nome());
+//			newUser.setCpf(body.cpf());
+//			newUser.setEmail(body.email());
+//			newUser.setSenha(passwordEncoder.encode(body.senha()));
+//			this.userRepository.save(newUser);
+//
+// 				String token = this.tokenService.generateToken(newUser);
+//				return ResponseEntity.ok(new ResponseDTO("Usuário criado com sucesso", newUser.getNome(), token));
+//		}
+//		return ResponseEntity.badRequest().build();
+//	}
 }
